@@ -1,8 +1,8 @@
 {
     "version": "1.0.0",
     "summary": "A Native implementation for sending JSONP GET requests",
-    "repository": "https://github.com/tolgap/elm-jsonp.git",
-    "license": "BSD3",
+    "repository": "https://github.com/paramanders/elm-jsonp.git",
+    "license": "MIT",
     "native-modules": true,
     "source-directories": [
         "src"

@@ -1,4 +1,4 @@
-var _tolgap$elm_jsonp$Native_Jsonp = function() {
+var _paramanders$elm_jsonp$Native_Jsonp = function() {
 
   function jsonp(url, callbackName)
   {

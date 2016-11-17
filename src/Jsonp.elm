@@ -16,6 +16,7 @@ import Random
 import Task exposing (Task)
 import Time
 
+
 {-| Send a GET request to the given URL. The specified `Decoder` will be
 used to parse the result.
 
@@ -26,13 +27,17 @@ get : Json.Decoder value -> String -> Task Http.Error value
 get decoder url =
     let
         decode s =
-            Json.decodeString decoder s
-                |> Task.fromResult
-                |> Task.mapError Http.UnexpectedPayload
+            case Json.decodeString decoder s of
+                Err e ->
+                    Task.fail Http.NetworkError
+
+                Ok value ->
+                    Task.succeed value
     in
         randomCallbackName
-            `Task.andThen` jsonp url
-            `Task.andThen` decode
+            |> Task.andThen (jsonp url)
+            |> Task.andThen decode
+
 
 {-| Send an arbitrary JSONP request. You will have to map the error for this `Task`
 yourself, as JSONP failures cannot be captured. You will most likely be using
@@ -52,5 +57,5 @@ randomCallbackName =
     in
         Time.now
             |> Task.map (round >> Random.initialSeed)
-            |> Task.map (Random.step generator >> fst)
+            |> Task.map (Random.step generator >> Tuple.first)
             |> Task.map (toString >> (++) "callback")
